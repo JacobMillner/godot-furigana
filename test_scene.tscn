@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3 uid="uid://1cniklanvc6w"]
+
+[ext_resource type="Script" path="res://addons/furiganatextlabel/FuriganaTextLabelScript.gd" id="1_h14mx"]
+
+[sub_resource type="Environment" id="Environment_luaaf"]
+
+[sub_resource type="Theme" id="Theme_pkqyy"]
+default_font_size = 30
+
+[sub_resource type="BoxMesh" id="BoxMesh_ej3ts"]
+
+[sub_resource type="Animation" id="Animation_mxc8e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_kfxju"]
+resource_name = "spin"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5, 10),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 3.14159, 0), Vector3(0, 6.26573, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qc5ds"]
+_data = {
+"RESET": SubResource("Animation_mxc8e"),
+"spin": SubResource("Animation_kfxju")
+}
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_luaaf")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.963406, 0.268046, 0, -0.268046, 0.963406, 0, 1.20717, 1.94581)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D"]
+
+[node name="FuriganaTextLabel" type="RichTextLabel" parent="Camera3D/CanvasLayer"]
+offset_left = 452.0
+offset_top = 166.0
+offset_right = 928.0
+offset_bottom = 312.0
+theme = SubResource("Theme_pkqyy")
+bbcode_enabled = true
+text = "こんにちは、%ruby{世界,せかい}!"
+script = ExtResource("1_h14mx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.29572)
+mesh = SubResource("BoxMesh_ej3ts")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MeshInstance3D"]
+libraries = {
+"": SubResource("AnimationLibrary_qc5ds")
+}
+autoplay = "spin"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.359736, 0.933054, 0, -0.933054, 0.359736, 0, 7.38552, 0)
